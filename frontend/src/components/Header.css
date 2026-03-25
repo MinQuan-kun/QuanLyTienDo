@@ -1,0 +1,111 @@
+.header {
+
+  background: linear-gradient(135deg, rgba(185, 28, 28, 0.85) 0%, rgba(127, 29, 29, 0.9) 100%), url('/img/Bg.jpg') no-repeat;
+  
+  background-size: cover; 
+  background-position: center; 
+  background-attachment: fixed; 
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid #fbbf24;
+}
+
+.header-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-width: 450px;
+}
+
+.logo-img {
+  height: 65px;
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.header-logo h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.header-controls {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+  max-width: 700px;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+  flex: 2;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  color: #666;
+  z-index: 10;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: white;
+  color: #1f2937;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.4); /* Focus màu vàng gold */
+  border-color: #fbbf24;
+}
+
+.category-select {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+.category-select:hover {
+  border-color: #fbbf24;
+}
+
+.category-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.4);
+}
