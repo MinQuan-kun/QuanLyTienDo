@@ -9,18 +9,49 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Cấu hình CORS động từ file .env
+// Cấu hình CORS - cho phép cả local dev và Render production
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://quanlytiendo-frontend.onrender.com'
+];
 app.use(cors({
-  origin: '*'
+  origin: function (origin, callback) {
+    // Cho phép requests không có origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
 }));
 
 const PORT = process.env.PORT || 5000;
 const mongoURI = process.env.MONGO_URI;
 
-// Kết nối DB sử dụng biến môi trường
-mongoose.connect(mongoURI)
-  .then(() => console.log('✓ Kết nối MongoDB thành công'))
-  .catch(err => console.error('✗ Lỗi kết nối MongoDB:', err));
+// Kết nối DB sử dụng biến môi trường (có retry)
+const connectWithRetry = async (retries = 5, delay = 3000) => {
+  for (let i = 1; i <= retries; i++) {
+    try {
+      await mongoose.connect(mongoURI, {
+        serverSelectionTimeoutMS: 10000,
+        socketTimeoutMS: 45000,
+      });
+      console.log('✓ Kết nối MongoDB thành công');
+      return;
+    } catch (err) {
+      console.error(`✗ Lần ${i}/${retries} - Lỗi kết nối MongoDB:`, err.message);
+      if (i < retries) {
+        console.log(`  ⏳ Thử lại sau ${delay / 1000} giây...`);
+        await new Promise(res => setTimeout(res, delay));
+      } else {
+        console.error('✗ Không thể kết nối MongoDB sau nhiều lần thử. Kiểm tra mạng/DNS.');
+      }
+    }
+  }
+};
+connectWithRetry();
 
 // Import controllers và routes
 const progressController = require('./controller/progressController');
