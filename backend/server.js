@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+
 const mongoose = require('mongoose');
 
 const app = express();
@@ -14,12 +15,16 @@ const allowedOrigins = [
   '*'
 ];
 app.use(cors({
-  origin: 'https://quanlytiendo-frontend.onrender.com/api',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
 
 const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
 const mongoURI = process.env.MONGO_URI;
 
 // Kết nối DB sử dụng biến môi trường (có retry)
