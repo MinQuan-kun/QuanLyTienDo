@@ -14,7 +14,7 @@ const allowedOrigins = [
   '*'
 ];
 app.use(cors({
-  origin: 'https://quanlytiendo-frontend.onrender.com',
+  origin: 'https://quanlytiendo-frontend.onrender.com/api',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
