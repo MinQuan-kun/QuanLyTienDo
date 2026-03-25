@@ -9,20 +9,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Cấu hình CORS - cho phép cả local dev và Render production
+// Cấu hình CORS động từ file .env
 const allowedOrigins = [
   '*'
 ];
 app.use(cors({
-  origin: function (origin, callback) {
-    // Cho phép requests không có origin (mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true
+  origin: 'https://quanlytiendo-frontend.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 const PORT = process.env.PORT || 5000;
