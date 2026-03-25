@@ -11,9 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Cấu hình CORS - cho phép cả local dev và Render production
 const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://quanlytiendo-frontend.onrender.com'
+  '*'
 ];
 app.use(cors({
   origin: function (origin, callback) {
