@@ -1,7 +1,10 @@
 import React from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import './Header.css';
 
 const Header = ({ searchTerm, onSearchChange, selectedCategory, onCategoryChange, categories }) => {
+  const { user, logout } = useAuth();
+
   return (
     <header className="header">
       <div className="header-top">
@@ -17,6 +20,15 @@ const Header = ({ searchTerm, onSearchChange, selectedCategory, onCategoryChange
               <h2>THEO DÕI NGHỊ QUYẾT ĐẢNG BỘ LẦN THỨ I, NHIỆM KỲ 2025 - 2030</h2>
             </div>
           </div>
+          
+          {user && (
+            <div className="user-profile">
+              <span className="user-name">Chào, <strong>{user.username}</strong></span>
+              <button onClick={logout} className="logout-button">
+                Đăng xuất
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -52,4 +64,4 @@ const Header = ({ searchTerm, onSearchChange, selectedCategory, onCategoryChange
   );
 };
 
-export default Header;
+export default Header;

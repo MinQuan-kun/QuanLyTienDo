@@ -1,15 +1,34 @@
-import { useState } from 'react'
-import ProgressTracker from './components/ProgressTracker'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import ProgressTracker from './components/ProgressTracker';
+import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './contexts/AuthContext';
+import './App.css';
 
 function App() {
   return (
-    <div className="app-container">
-      <div className="app-content">
-        <ProgressTracker />
-      </div>
-    </div>
-  )
+    <AuthProvider>
+      <Router>
+        <div className="app-container">
+          <div className="app-content">
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route 
+                path="/" 
+                element={
+                  <ProtectedRoute>
+                    <ProgressTracker />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
+

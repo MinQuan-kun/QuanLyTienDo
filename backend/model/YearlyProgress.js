@@ -36,7 +36,6 @@ const yearlyProgressSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Index to ensure unique year per section
 yearlyProgressSchema.index({ section: 1, year: 1 }, { unique: true });
 
 module.exports = mongoose.model('YearlyProgress', yearlyProgressSchema);

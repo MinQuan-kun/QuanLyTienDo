@@ -15,15 +15,12 @@ const allowedOrigins = [
   '*'
 ];
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
 
 const mongoURI = process.env.MONGO_URI;
 
@@ -52,25 +49,32 @@ connectWithRetry();
 
 // Import controllers và routes
 const progressController = require('./controller/progressController');
+const authController = require('./controller/authController');
+const { protect } = require('./middleware/authMiddleware');
 
 // Routes
+// Authentication routes
+app.post('/api/auth/register', authController.register);
+app.post('/api/auth/login', authController.login);
+
 // Document routes
-app.post('/api/documents', progressController.createDocument);
-app.get('/api/documents', progressController.getAllDocuments);
-app.get('/api/documents/:id', progressController.getDocumentById);
-app.put('/api/documents/:id', progressController.updateDocument);
-app.delete('/api/documents/:id', progressController.deleteDocument);
+app.post('/api/documents', protect, progressController.createDocument);
+app.get('/api/documents', protect, progressController.getAllDocuments);
+app.get('/api/documents/:id', protect, progressController.getDocumentById);
+app.put('/api/documents/:id', protect, progressController.updateDocument);
+app.delete('/api/documents/:id', protect, progressController.deleteDocument);
 
 // Section routes
-app.post('/api/sections', progressController.createSection);
-app.get('/api/sections/:documentId', progressController.getSectionsByDocument);
-app.put('/api/sections/:id', progressController.updateSection);
-app.delete('/api/sections/:id', progressController.deleteSection);
+app.post('/api/sections', protect, progressController.createSection);
+app.get('/api/sections/:documentId', protect, progressController.getSectionsByDocument);
+app.put('/api/sections/:id', protect, progressController.updateSection);
+app.delete('/api/sections/:id', protect, progressController.deleteSection);
 
 // Yearly Progress routes
-app.post('/api/yearly-progress', progressController.createOrUpdateYearlyProgress);
-app.get('/api/yearly-progress/:sectionId', progressController.getYearlyProgressBySection);
-app.delete('/api/yearly-progress/:id', progressController.deleteYearlyProgress);
+app.post('/api/yearly-progress', protect, progressController.createOrUpdateYearlyProgress);
+app.get('/api/yearly-progress/:sectionId', protect, progressController.getYearlyProgressBySection);
+app.delete('/api/yearly-progress/:id', protect, progressController.deleteYearlyProgress);
+
 
 // Health check
 app.get('/api/health', (req, res) => {
