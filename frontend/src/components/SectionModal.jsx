@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import './Modal.css';
+import '../styles/main.css';
 
 export default function SectionModal({ 
   isOpen, 

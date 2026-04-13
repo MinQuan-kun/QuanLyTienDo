@@ -6,7 +6,7 @@ import DataInputForm from './DataInputForm';
 import DocumentModal from './DocumentModal';
 import SectionModal from './SectionModal';
 import { useDocuments, useSections, useYearlyProgress } from '../hooks/useApi';
-import './ProgressTracker.css';
+import '../styles/main.css';
 
 const CATEGORIES = ['Kinh tế', 'Xã hội', 'Môi trường', 'Giáo dục', 'Y tế', 'Khác'];
 
@@ -160,9 +160,9 @@ export default function ProgressTracker() {
         <div className="left-panel">
           <div className="documents-panel">
             <div className="panel-header">
-              <h2>Văn Bản</h2>
+              {/* <h2>Văn Bản</h2> */}
               <button onClick={handleAddDocument} className="btn-primary">
-                + Thêm Văn Bản
+                + Thêm nội dung
               </button>
             </div>
 

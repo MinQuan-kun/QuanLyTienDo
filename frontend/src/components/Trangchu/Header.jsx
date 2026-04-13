@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/main.css';
 
@@ -17,7 +16,6 @@ const Header = ({ searchTerm, onSearchChange, selectedCategory, onCategoryChange
             />
             <div className="brand-text">
               <h1>ĐẢNG ỦY XÃ BÀ ĐIỂM</h1>
-              <h2>THEO DÕI NGHỊ QUYẾT ĐẢNG BỘ LẦN THỨ I, NHIỆM KỲ 2025 - 2030</h2>
             </div>
           </div>
           
