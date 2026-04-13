@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
-import '../styles/main.css';
+import '../../styles/main.css';
 
 
 export default function ProgressChart({ 

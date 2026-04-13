@@ -1,21 +1,19 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import '../styles/main.css';
+import '../../styles/main.css';
 
-export default function DocumentModal({ 
+export default function SectionModal({ 
   isOpen, 
   onClose, 
   onSave, 
   initialData,
-  categories 
+  documentId
 }) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    category: 'Kinh tế',
-    startDate: new Date().toISOString().split('T')[0],
-    endDate: new Date(new Date().getFullYear() + 5, new Date().getMonth(), new Date().getDate())
-      .toISOString().split('T')[0],
+    targetValue: 10,
+    unit: '%',
   });
 
   const [loading, setLoading] = useState(false);
@@ -25,9 +23,15 @@ export default function DocumentModal({
       setFormData({
         name: initialData.name || '',
         description: initialData.description || '',
-        category: initialData.category || 'Kinh tế',
-        startDate: new Date(initialData.startDate).toISOString().split('T')[0],
-        endDate: new Date(initialData.endDate).toISOString().split('T')[0],
+        targetValue: initialData.targetValue || 10,
+        unit: initialData.unit || '%',
+      });
+    } else {
+      setFormData({
+        name: '',
+        description: '',
+        targetValue: 10,
+        unit: '%',
       });
     }
   }, [initialData, isOpen]);
@@ -36,7 +40,7 @@ export default function DocumentModal({
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'targetValue' ? parseFloat(value) || 0 : value,
     }));
   };
 
@@ -45,7 +49,11 @@ export default function DocumentModal({
     setLoading(true);
 
     try {
-      await onSave(formData);
+      const data = {
+        ...formData,
+        documentId: initialData?.document || documentId,
+      };
+      await onSave(data);
       onClose();
     } catch (error) {
       alert('Lỗi: ' + error.message);
@@ -60,7 +68,7 @@ export default function DocumentModal({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{initialData ? 'Chỉnh Sửa Văn Bản' : 'Thêm Văn Bản Mới'}</h2>
+          <h2>{initialData ? 'Chỉnh Sửa Mục' : 'Thêm Mục Mới'}</h2>
           <button onClick={onClose} className="btn-close">
             <X size={24} />
           </button>
@@ -68,7 +76,7 @@ export default function DocumentModal({
 
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="form-group">
-            <label>Tên Văn Bản *</label>
+            <label>Tên Mục *</label>
             <input
               type="text"
               name="name"
@@ -76,7 +84,7 @@ export default function DocumentModal({
               onChange={handleChange}
               required
               disabled={loading}
-              placeholder="Nhập tên văn bản"
+              placeholder="Nhập tên mục"
             />
           </div>
 
@@ -94,41 +102,28 @@ export default function DocumentModal({
 
           <div className="form-row">
             <div className="form-group">
-              <label>Thể Loại *</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-                disabled={loading}
-              >
-                {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Ngày Bắt Đầu *</label>
+              <label>Giá Trị Mục Tiêu *</label>
               <input
-                type="date"
-                name="startDate"
-                value={formData.startDate}
+                type="number"
+                name="targetValue"
+                value={formData.targetValue}
                 onChange={handleChange}
+                step="0.01"
                 required
                 disabled={loading}
+                placeholder="0"
               />
             </div>
 
             <div className="form-group">
-              <label>Ngày Kết Thúc *</label>
+              <label>Đơn Vị</label>
               <input
-                type="date"
-                name="endDate"
-                value={formData.endDate}
+                type="text"
+                name="unit"
+                value={formData.unit}
                 onChange={handleChange}
-                required
                 disabled={loading}
+                placeholder="%"
               />
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { Trash2, Edit2, Plus } from 'lucide-react';
-import '../styles/main.css';
+import '../../styles/main.css';
 
 export default function Sidebar({ 
   sections, 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Save, X } from 'lucide-react';
-import '../styles/main.css';
+import '../../styles/main.css';
 
 export default function DataInputForm({ 
   section, 

@@ -46,6 +46,81 @@
 Header
 ---------------*/
 
+/*Header trang chủ*/
+/* --- Header Styles --- */
+.Trangchu-header {
+    background-color: #e9e3c7;
+  width: 100%;
+  background-size: cover;      
+  background-position: center;  
+  background-repeat: no-repeat; 
+  padding: 20px 0;             
+  color: #ffffff;
+}
+
+.trangchu-header-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.trangchu-header-container {
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.title-sub {
+  color: #000; /* đen */
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.trangchu-header-brand {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 20px;
+}
+
+.trangchu-logo-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  background-color: #fff;
+}
+
+.brand-text h1 {
+  color: #ff0000;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .trangchu-header-brand {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .brand-text h1 {
+    font-size: 1.4rem;
+  }
+
+  .trangchu-logo-img {
+    width: 60px;
+    height: 60px;
+  }
+}
+/*End header trang chủ */
+
 .card-header {
   padding: 1.5rem;
   border-bottom: 1px solid #e5e7eb;
@@ -1306,3 +1381,120 @@ button:disabled {
   color: #9ca3af;
   font-size: 0.95rem;
 }
+
+
+/*Nav bar  */
+/* --- Navbar Styles --- */
+.trangchu-navbar {
+  width: 100%;
+  background-color: #c62828; /* Màu đỏ sậm hơn hoặc bằng màu header */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 3px solid #ffca28; /* Đường viền vàng phía dưới tạo điểm nhấn */
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between; /* Đẩy left và right sang 2 bên */
+  align-items: stretch; /* Để các item cao bằng nhau */
+  height: 45px; /* Chiều cao thanh menu */
+}
+
+.nav-group-left, .nav-group-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+}
+
+.nav-item:hover {
+  background-color: #b71c1c; /* Đỏ tối hơn khi hover */
+  color: #ffca28; /* Chữ chuyển vàng khi hover */
+}
+
+/* Style riêng cho icon Home */
+.home-icon {
+  font-size: 1.2rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0 25px;
+}
+
+/* Nút đăng nhập */
+.login-btn {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0 10px;
+  }
+  
+  .nav-item {
+    padding: 0 10px;
+    font-size: 0.8rem;
+  }
+}
+/* End Nav bar */
+
+/* Quick access buttons */
+/* Background khu vực */
+.quick-access {
+  background: #f2f2f2;
+  padding: 40px 0;
+}
+
+/* Container */
+.quick-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Card */
+.quick-item {
+  width: 260px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Màu riêng từng ô */
+.quick-item.search {
+  background: #0d5c8b; /* xanh đậm */
+}
+
+.quick-item.progress {
+  background: #f01260; /* hồng */
+}
+
+/* Hover */
+.quick-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  opacity: 0.95;
+}
+
+/* End Quick access buttons */

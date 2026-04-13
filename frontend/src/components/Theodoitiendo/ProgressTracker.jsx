@@ -5,8 +5,8 @@ import ProgressChart from './ProgressChart';
 import DataInputForm from './DataInputForm';
 import DocumentModal from './DocumentModal';
 import SectionModal from './SectionModal';
-import { useDocuments, useSections, useYearlyProgress } from '../hooks/useApi';
-import '../styles/main.css';
+import { useDocuments, useSections, useYearlyProgress } from '../../hooks/useApi';
+import '../../styles/main.css';
 
 const CATEGORIES = ['Kinh tế', 'Xã hội', 'Môi trường', 'Giáo dục', 'Y tế', 'Khác'];
 
