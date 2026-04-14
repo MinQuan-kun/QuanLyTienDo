@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Header = ({ backgroundImage = "/img/" }) => {
     const headerStyle = backgroundImage
         ? { backgroundImage: `url(${backgroundImage})` }

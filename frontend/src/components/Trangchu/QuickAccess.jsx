@@ -3,7 +3,7 @@ const QuickAccess = () => {
     <div className="quick-access">
       <div className="quick-container">
         
-        <a href="/tim-kiem" className="quick-item search">
+        <a href="/tracuu" className="quick-item search">
           <span>TÌM KIẾM VĂN BẢN</span>
         </a>
 
