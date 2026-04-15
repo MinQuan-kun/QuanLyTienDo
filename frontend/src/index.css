@@ -28,9 +28,9 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #f3f4f6;
-    --text-light: #d1d5db;
-    --bg: #1f2937;
-    --border: #374151;
+    --text-light: #ffffff;
+    --bg: #ffffff;
+    --border: #ffffff;
     --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
 }
@@ -130,4 +130,3 @@ code {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text);
 }
-

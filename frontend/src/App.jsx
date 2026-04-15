@@ -7,25 +7,22 @@ import ProtectedRoute from './components/ProtectedRoute';
 import TrangchuPage from './pages/TrangchuPage';
 import LoginPage from './pages/LoginPage';
 import TheodoitiendoPage from './pages/TheodoitiendoPage';
-// import TracuuPage from './pages/TracuuPage';
+import TimkiemPage from './pages/TimkiemPage';
+import AccountManagementPage from './pages/AccountManagementPage';
+
 function App() {
   return (
     <AuthProvider>
       <Router>
-        {/* Container chính: Đảm bảo không bị tràn màn hình (viewport) */}
         <div className="flex h-screen w-full overflow-hidden bg-gray-50">
           <Routes>
             <Route path="/" element={<TrangchuPage />} />
             <Route path="/login" element={<LoginPage />} />
-            {/* <Route path="/tracuu" element={<TracuuPage />} /> */}
-            {/* Trang theo dõi tiến độ: 
-                Lưu ý: Không bọc ProtectedRoute nếu muốn cho khách xem */}
-            <Route path="/theodoitiendo" element={<TheodoitiendoPage />} />
-            
-            {/* Các route yêu cầu đăng nhập mới được vào */}
-            
+            <Route path="/tim-kiem" element={<TimkiemPage />} />
+            <Route path="/theo-doi-tien-do" element={<TheodoitiendoPage />} />
+
             <Route element={<ProtectedRoute />}>
-              {/* Thêm các trang admin/private ở đây nếu có */}
+              <Route path="/admin/users" element={<AccountManagementPage />} />
             </Route>
           </Routes>
         </div>

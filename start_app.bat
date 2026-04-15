@@ -3,35 +3,45 @@ chcp 65001 > nul
 title TheoDoiTienDo - Launcher
 
 echo ========================================
-echo   Khoi dong ung dung TheoDoiTienDo
+echo   Đang khởi động TheoDoiTienDo
 echo ========================================
 echo.
 
-:: Khởi động Backend trong cửa sổ riêng
-echo [1/3] Dang khoi dong Backend...
-start "TheoDoiTienDo - Backend" cmd /k "cd /d %~dp0backend && node server.js"
+if not exist "TheoDoiTienDo.exe" (
+    echo [LỖI] Không tìm thấy file TheoDoiTienDo.exe. 
+    echo Vui lòng chạy build_app.bat trước.
+    pause
+    exit /b 1
+)
 
-:: Khởi động Frontend trong cửa sổ riêng
-echo [2/3] Dang khoi dong Frontend...
-start "TheoDoiTienDo - Frontend" cmd /k "cd /d %~dp0frontend && npm run dev"
+:: Kiểm tra file .env
+if not exist ".env" (
+    if exist "backend\.env" (
+        echo [INFO] Đang sao chép file .env từ thư mục backend...
+        copy "backend\.env" ".env" > nul
+    ) else (
+        echo [CẢNH BÁO] Không tìm thấy file .env. 
+        echo Hệ thống có thể không kết nối được Database.
+    )
+)
 
-:: Chờ backend kết nối MongoDB (đủ thời gian cho retry)
-echo [3/3] Dang cho Backend ket noi Database (15 giay)...
-timeout /t 15 /nobreak > nul
-
-:: Kiểm tra database
-echo Dang kiem tra Database...
-cd /d %~dp0frontend
-node seed.js
-
+echo [1/1] Đang chạy ứng dụng...
 echo.
 echo ========================================
-echo   Hoan thanh! Ca hai server dang chay.
+echo   Ứng dụng đang được khởi tạo...
+echo   Vui lòng chờ giây lát.
 echo ========================================
-echo   Backend:  http://localhost:5000
-echo   Frontend: http://localhost:5173
 echo.
-echo Luu y: Ban co the nhan Ctrl+C hoac tat
-echo cua so nay de dung ca hai Server.
-echo ========================================
-pause > nul
+
+:: Khởi động ứng dụng (Single process)
+start "" "TheoDoiTienDo.exe"
+
+timeout /t 3 > nul
+
+echo.
+echo ➜ Ứng dụng đã sẵn sàng tại: http://localhost:5000
+echo.
+echo Lưu ý: Giữ cửa sổ này để xem log hoặc nhấn Ctrl+C để dừng.
+echo.
+
+exit

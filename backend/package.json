@@ -4,7 +4,15 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
+    "build:exe": "pkg . --targets node18-win-x64 --output ../TheoDoiTienDo.exe",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": "server.js",
+  "pkg": {
+    "assets": [
+      "../frontend/dist/**/*",
+      ".env"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -15,7 +23,12 @@
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "googleapis": "^171.4.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.3.2"
+    "mongoose": "^9.3.2",
+    "multer": "^2.1.1"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
   }
 }

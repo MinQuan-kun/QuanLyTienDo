@@ -15,6 +15,11 @@ const documentSchema = new mongoose.Schema(
       required: true,
       enum: ['Kinh tế', 'Xã hội', 'Môi trường', 'Giáo dục', 'Y tế', 'Khác'],
     },
+    projectId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project',
+      required: false, // Để tương thích data cũ, ta tạm set false
+    },
     startDate: {
       type: Date,
       required: true,
@@ -29,6 +34,18 @@ const documentSchema = new mongoose.Schema(
         ref: 'Section',
       },
     ],
+    driveFileId: {
+      type: String,
+      default: '',
+    },
+    driveFileName: {
+      type: String,
+      default: '',
+    },
+    fileUrl: {
+      type: String,
+      default: '',
+    },
     createdAt: {
       type: Date,
       default: Date.now,

@@ -21,8 +21,9 @@ async function checkAndInitSchema() {
     process.exit(0);
 
   } catch (error) {
-    if (error.code === 'ECONNREFUSED') {
-      console.error('✗ Lỗi: Không thể kết nối tới Backend. Hãy chắc chắn Server đang chạy tại http://localhost:5000');
+    if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND') {
+      console.error('✗ Lỗi: Không thể kết nối tới Backend (localhost:5000).');
+      console.error('  Đảm bảo rằng TheoDoiTienDo.exe hoặc Backend Server đang chạy.');
     } else {
       console.error('✗ Lỗi kiểm tra dữ liệu:', error.response?.data || error.message);
     }

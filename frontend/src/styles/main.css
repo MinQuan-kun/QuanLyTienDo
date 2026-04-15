@@ -49,7 +49,7 @@ Header
 /*Header trang chủ*/
 /* --- Header Styles --- */
 .Trangchu-header {
-    background-color: #e9e3c7;
+  background-color: #ffffff;
   width: 100%;
   background-size: cover;      
   background-position: center;  
@@ -1532,6 +1532,10 @@ button:disabled {
   background: #f01260; /* hồng */
 }
 
+.quick-item.account {
+  background: #6f42c1; /* tím */
+}
+
 /* Hover */
 .quick-item:hover {
   transform: translateY(-5px);
@@ -1540,3 +1544,297 @@ button:disabled {
 }
 
 /* End Quick access buttons */
+
+/*TheoDoiTienDo css  */
+
+/* --- Style cho trang Theo dõi tiến độ --- */
+.progress-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+  font-family: 'Inter', sans-serif;
+}
+
+.progress-main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Cột trái - DocumentList */
+.column-document-list {
+  width: 25%;
+  min-width: 320px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Cột giữa - MainContent */
+.column-main-content {
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 24px;
+  padding: 0 5px;
+}
+.column-main-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Cột phải - DocumentDetails */
+.column-document-details {
+  width: 28%;
+  min-width: 320px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+  padding: 28px;
+  overflow-y: auto;
+}
+
+/* Thẻ văn kiện trong danh sách */
+.doc-item {
+  padding: 18px 24px;
+  margin: 8px 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid transparent;
+}
+
+.doc-item:hover { 
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.doc-item.active {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white !important;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+}
+.doc-item.active .text-gray-800 { color: white; }
+.doc-item.active .text-gray-400 { color: #bfdbfe; }
+.doc-item.active .text-blue-600 { color: white; }
+
+/* Filter Category */
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.category-pill {
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0,0,0,0.05);
+  color: #475569;
+}
+.category-pill:hover { background: white; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+.category-pill.active { background: #1e293b; color: white; border-color: #1e293b;}
+
+/* Component Biểu đồ & Mục tiêu */
+.card-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease;
+}
+.card-glass:hover {
+  transform: translateY(-2px);
+}
+
+.objective-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px;
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.03);
+  transition: all 0.3s;
+}
+.objective-row:hover {
+  transform: translateX(4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  background: #f8fafc;
+}
+
+/* Biểu đồ phần trăm */
+.chart-hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: white;
+  border-radius: 24px;
+  padding: 36px 48px;
+  margin-bottom: 24px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+.chart-hero-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.chart-hero-title {
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.chart-hero-value {
+  font-size: 56px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+/* Thông số cột Details */
+.detail-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+.detail-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+/* Thông báo khi chưa đăng nhập */
+.guest-warning-box {
+  background: linear-gradient(135deg, #fffcf0 0%, #fef3c7 100%);
+  border: 1px solid #fde68a;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  color: #b45309;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.15);
+}
+
+/* ==================================
+   REDESIGN MOCKUP LAYOUT CLASSES
+   ================================== */
+.progress-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f2f5; /* Global gray background from mockup */
+}
+
+.progress-main-layout {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  border-top: 2px solid #000;
+}
+
+.column-document-list {
+  width: 25%;
+  border-right: 2px solid #000;
+  padding: 20px;
+  background-color: #eeeeee;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-main-content {
+  width: 50%;
+  padding: 20px;
+  background-color: #eeeeee;
+  text-align: center;
+}
+
+.column-document-details {
+  width: 25%;
+  border-left: 2px solid #000;
+  padding: 20px;
+  background-color: #eeeeee;
+}
+
+/* Override existing Navbar for mockup */
+.mockup-navbar {
+  background-color: #c1272d !important; /* Dark red */
+  color: #ffffff;
+}
+
+.mockup-nav-search-input {
+  border-radius: 20px !important;
+  background: white !important;
+  border: 1px solid #ccc !important;
+}
+
+/* Mockup list styling */
+.mockup-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.mockup-checkbox-box {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #333;
+  display: inline-block;
+  background: white;
+}
+
+.mockup-list-line {
+  flex: 1;
+  border-bottom: 2px solid #333;
+  color: #333;
+  font-weight: 500;
+  padding-bottom: 2px;
+  position: relative;
+}
+
+.mockup-list-item.active .mockup-checkbox-box {
+  background: #333;
+}

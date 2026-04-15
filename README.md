@@ -266,4 +266,47 @@ Nếu gặp vấn đề, hãy kiểm tra:
 
 **Tạo bởi:** Development Team
 **Ngày:** 2026
-# QuanLyTienDo
+
+---
+
+## ☁️ Triển Khai (Deployment)
+
+### 1. Triển Khai lên Render (Blueprint)
+Dự án đã được cấu hình sẵn để triển khai lên [Render](https://render.com) thông qua file `render.yaml`. Công cụ này sẽ tự động tạo 2 dịch vụ:
+- **Backend (Web Service):** `https://quanlytiendo-api.onrender.com`
+- **Frontend (Static Site):** `https://quanlytiendo-frontend.onrender.com`
+
+**Các bước thực hiện:**
+1. Connect GitHub repository của bạn với Render.
+2. Chọn **Blueprint** từ menu của Render.
+3. Render sẽ nhận diện file `render.yaml` và liệt kê các dịch vụ.
+4. Nhập các biến môi trường (Environment Variables) còn thiếu trong Dashboard (đặc biệt là `MONGO_URI` và các thông tin Google Drive).
+
+### 2. Biến Môi Trường (Environment Variables)
+| Service | Key | Mô tả |
+| :--- | :--- | :--- |
+| **Backend** | `MONGO_URI` | Địa chỉ kết nối MongoDB Atlas |
+| | `FRONTEND_URL` | URL của frontend (để cấu hình CORS) |
+| | `GOOGLE_*` | Các thông tin tích hợp Google Drive |
+| **Frontend** | `VITE_API_URL` | URL của backend api (kết thúc bằng `/api`) |
+
+---
+
+## 📦 Đóng gói Standalone EXE
+
+Dự án có khả năng đóng gói thành một file `.exe` duy nhất để chạy trên Windows mà không cần cài đặt Node.js.
+
+### 1. Build tự động
+Chạy file script sau ở thư mục gốc:
+```bash
+build_app.bat
+```
+Script này sẽ tự động:
+- Build frontend và nén vào thư mục `dist`.
+- Sử dụng `pkg` để đóng gói backend + frontend thành `TheoDoiTienDo.exe`.
+
+### 2. Chạy ứng dụng
+Sau khi build xong, bạn chỉ cần chạy:
+- `TheoDoiTienDo.exe` hoặc `start_app.bat`.
+- Ứng dụng sẽ chạy tại: `http://localhost:5000`
+

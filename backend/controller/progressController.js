@@ -1,15 +1,93 @@
 const Document = require('../model/Document');
 const Section = require('../model/Section');
 const YearlyProgress = require('../model/YearlyProgress');
+const Project = require('../model/Project');
+const { uploadFileToDrive, deleteFileFromDrive } = require('../middleware/driveService');
+
+// ===== PROJECT CONTROLLERS =====
+
+exports.createProject = async (req, res) => {
+  try {
+    const { name, description } = req.body;
+    if (!name) return res.status(400).json({ message: 'Vui lòng cung cấp tên Chủ đề (Project)' });
+    
+    const newProject = new Project({ name, description });
+    await newProject.save();
+    
+    res.status(201).json({ message: 'Tạo chủ đề thành công', data: newProject });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi server', error: error.message });
+  }
+};
+
+exports.getAllProjects = async (req, res) => {
+  try {
+    const projects = await Project.find({}).sort({ createdAt: -1 });
+    res.status(200).json({ data: projects });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi server', error: error.message });
+  }
+};
+
+exports.updateProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    
+    const project = await Project.findByIdAndUpdate(
+      id,
+      { name, description, updatedAt: Date.now() },
+      { returnDocument: 'after' }
+    );
+    if (!project) return res.status(404).json({ message: 'Không tìm thấy chủ đề' });
+    res.status(200).json({ message: 'Cập nhật thành công', data: project });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi server', error: error.message });
+  }
+};
+
+exports.deleteProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const project = await Project.findByIdAndDelete(id);
+    if (!project) return res.status(404).json({ message: 'Không tìm thấy chủ đề' });
+
+    // Cascade delete: xóa tất cả documents, sections, yearly data thuộc project
+    const docs = await Document.find({ projectId: id });
+    for (const doc of docs) {
+      // Xóa yearly data của các section thuộc document
+      await YearlyProgress.deleteMany({ section: { $in: doc.sections } });
+      // Xóa sections thuộc document
+      await Section.deleteMany({ document: doc._id });
+    }
+    // Xóa tất cả documents thuộc project
+    await Document.deleteMany({ projectId: id });
+
+    res.status(200).json({ message: 'Xóa chủ đề và toàn bộ dữ liệu thành công' });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi server', error: error.message });
+  }
+};
 
 // ===== DOCUMENT CONTROLLERS =====
 
 exports.createDocument = async (req, res) => {
   try {
-    const { name, description, category, startDate, endDate } = req.body;
+    const { name, description, category, startDate, endDate, projectId } = req.body;
 
     if (!name || !category || !startDate || !endDate) {
       return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin' });
+    }
+
+    let driveFileId = '';
+    let driveFileName = '';
+    let fileUrl = '';
+
+    if (req.file) {
+      driveFileName = Buffer.from(req.file.originalname, 'latin1').toString('utf8');
+      const uploadResult = await uploadFileToDrive(req.file.buffer, driveFileName, req.file.mimetype);
+      driveFileId = uploadResult.fileId;
+      fileUrl = uploadResult.webViewLink || '';
     }
 
     const newDocument = new Document({
@@ -18,6 +96,10 @@ exports.createDocument = async (req, res) => {
       category,
       startDate,
       endDate,
+      projectId,
+      driveFileId,
+      driveFileName,
+      fileUrl
     });
 
     await newDocument.save();
@@ -29,7 +111,7 @@ exports.createDocument = async (req, res) => {
 
 exports.getAllDocuments = async (req, res) => {
   try {
-    const { category, search } = req.query;
+    const { category, search, projectId } = req.query;
     let query = {};
 
     if (category) {
@@ -37,6 +119,14 @@ exports.getAllDocuments = async (req, res) => {
     }
     if (search) {
       query.name = { $regex: search, $options: 'i' };
+    }
+    if (projectId) {
+      query.projectId = projectId;
+    }
+
+    // Support for filtering records that have NO projectId (unclassified default)
+    if (projectId === 'unclassified') {
+      query.projectId = { $exists: false };
     }
 
     const documents = await Document.find(query)
@@ -74,17 +164,48 @@ exports.getDocumentById = async (req, res) => {
 exports.updateDocument = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, category, startDate, endDate } = req.body;
+    const { name, description, category, startDate, endDate, projectId } = req.body;
+
+    const existing = await Document.findById(id);
+    if (!existing) {
+      return res.status(404).json({ message: 'Không tìm thấy văn bản' });
+    }
+
+    const updateData = { 
+      name, 
+      description, 
+      category, 
+      startDate, 
+      endDate, 
+      projectId, 
+      updatedAt: Date.now() 
+    };
+
+    if (req.file) {
+      if (existing.driveFileId) {
+        await deleteFileFromDrive(existing.driveFileId);
+      }
+      const newFileName = Buffer.from(req.file.originalname, 'latin1').toString('utf8');
+      const uploadResult = await uploadFileToDrive(req.file.buffer, newFileName, req.file.mimetype);
+      updateData.driveFileId = uploadResult.fileId;
+      updateData.driveFileName = newFileName;
+      updateData.fileUrl = uploadResult.webViewLink || existing.fileUrl;
+    }
+
+    if (req.body.removeFile === 'true') {
+      if (existing.driveFileId) {
+        await deleteFileFromDrive(existing.driveFileId);
+      }
+      updateData.driveFileId = '';
+      updateData.driveFileName = '';
+      updateData.fileUrl = '';
+    }
 
     const document = await Document.findByIdAndUpdate(
       id,
-      { name, description, category, startDate, endDate, updatedAt: Date.now() },
+      updateData,
       { returnDocument: 'after' }
     );
-
-    if (!document) {
-      return res.status(404).json({ message: 'Không tìm thấy văn bản' });
-    }
 
     res.status(200).json({ message: 'Cập nhật thành công', data: document });
   } catch (error) {
@@ -102,6 +223,10 @@ exports.deleteDocument = async (req, res) => {
       return res.status(404).json({ message: 'Không tìm thấy văn bản' });
     }
 
+    if (document.driveFileId) {
+      await deleteFileFromDrive(document.driveFileId);
+    }
+
     // Delete all sections and yearly data
     await Section.deleteMany({ document: id });
     await YearlyProgress.deleteMany({ section: { $in: document.sections } });
@@ -116,7 +241,7 @@ exports.deleteDocument = async (req, res) => {
 
 exports.createSection = async (req, res) => {
   try {
-    const { name, description, targetValue, unit, documentId } = req.body;
+    const { name, description, targetValue, unit, order, documentId } = req.body;
 
     if (!name || !targetValue || !documentId) {
       return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin' });
@@ -127,6 +252,7 @@ exports.createSection = async (req, res) => {
       description,
       targetValue,
       unit: unit || '%',
+      order: order !== undefined ? Number(order) : 0,
       document: documentId,
     });
 
@@ -151,7 +277,7 @@ exports.getSectionsByDocument = async (req, res) => {
 
     const sections = await Section.find({ document: documentId })
       .populate('yearlyData')
-      .sort({ createdAt: -1 });
+      .sort({ order: 1, createdAt: 1 });
 
     res.status(200).json({ data: sections });
   } catch (error) {
@@ -162,17 +288,27 @@ exports.getSectionsByDocument = async (req, res) => {
 exports.updateSection = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, targetValue, unit } = req.body;
+    const { name, description, targetValue, unit, order } = req.body;
+
+    const existingSection = await Section.findById(id);
+    if (!existingSection) {
+      return res.status(404).json({ message: 'Không tìm thấy mục' });
+    }
+
+    const updateData = {
+      name, 
+      description, 
+      targetValue, 
+      unit, 
+      order: order !== undefined ? Number(order) : 0, 
+      updatedAt: Date.now() 
+    };
 
     const section = await Section.findByIdAndUpdate(
       id,
-      { name, description, targetValue, unit, updatedAt: Date.now() },
+      updateData,
       { returnDocument: 'after' }
     ).populate('yearlyData');
-
-    if (!section) {
-      return res.status(404).json({ message: 'Không tìm thấy mục' });
-    }
 
     res.status(200).json({ message: 'Cập nhật thành công', data: section });
   } catch (error) {
@@ -188,6 +324,10 @@ exports.deleteSection = async (req, res) => {
 
     if (!section) {
       return res.status(404).json({ message: 'Không tìm thấy mục' });
+    }
+
+    if (section.driveFileId) {
+      await deleteFileFromDrive(section.driveFileId);
     }
 
     // Remove section from document

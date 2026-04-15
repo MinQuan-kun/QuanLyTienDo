@@ -6,6 +6,10 @@ const sectionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    order: {
+      type: Number,
+      default: 0,
+    },
     description: {
       type: String,
       default: '',
@@ -18,6 +22,18 @@ const sectionSchema = new mongoose.Schema(
     unit: {
       type: String,
       default: '%',
+    },
+    fileUrl: {
+      type: String,
+      default: '',
+    },
+    driveFileId: {
+      type: String,
+      default: '',
+    },
+    driveFileName: {
+      type: String,
+      default: '',
     },
     document: {
       type: mongoose.Schema.Types.ObjectId,

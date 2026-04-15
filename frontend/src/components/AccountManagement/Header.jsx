@@ -12,7 +12,7 @@ const Header = ({ backgroundImage = "/img/" }) => {
                     className="tdt-header-logo"
                 />
                 <div className="tdt-header-text">
-                    <h3 className="tdt-header-subtitle">Trang chủ</h3>
+                    <h3 className="tdt-header-subtitle">Quản lý tài khoản</h3>
                     <h1 className="tdt-header-title">VĂN PHÒNG ĐẢNG ỦY XÃ BÀ ĐIỂM</h1>
                 </div>
             </div>
