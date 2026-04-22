@@ -9,7 +9,7 @@ import LoginPage from './pages/LoginPage';
 import TheodoitiendoPage from './pages/TheodoitiendoPage';
 import TimkiemPage from './pages/TimkiemPage';
 import AccountManagementPage from './pages/AccountManagementPage';
-
+import TheodoitiendotrienkhaiPage from './pages/TheodoitiendotrienkhaiPage';
 function App() {
   return (
     <AuthProvider>
@@ -20,7 +20,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/tim-kiem" element={<TimkiemPage />} />
             <Route path="/theo-doi-tien-do" element={<TheodoitiendoPage />} />
-
+            <Route path="/theo-doi-tien-do-trien-khai" element={<TheodoitiendotrienkhaiPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/admin/users" element={<AccountManagementPage />} />
             </Route>

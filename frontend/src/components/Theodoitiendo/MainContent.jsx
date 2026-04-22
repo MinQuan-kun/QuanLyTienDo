@@ -3,48 +3,22 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { FaChartBar, FaSpinner } from 'react-icons/fa';
 import { sectionAPI, yearlyProgressAPI } from '../../api/api';
 
-const MainContent = ({ selectedDoc, selectedSection, onSelectSection, isEditable, searchTerm }) => {
+const MainContent = ({ selectedDoc, selectedSection, onSelectSection, isEditable }) => {
   const formatNumber = (num) => {
     if (num === null || num === undefined) return '0';
     return new Intl.NumberFormat('vi-VN').format(num);
   };
-
-  const highlightText = (text, query) => {
-    if (!query || !query.trim() || !text) return text;
-    const parts = text.split(new RegExp(`(${query})`, 'gi'));
-    return (
-      <span>
-        {parts.map((part, i) => 
-          part.toLowerCase() === query.toLowerCase() 
-            ? <mark key={i} style={{ background: '#fff176', padding: '0 2px', borderRadius: '2px' }}>{part}</mark> 
-            : part
-        )}
-      </span>
-    );
-  };
-
   const [sections, setSections] = useState([]);
   const [yearlyData, setYearlyData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: 'order', direction: 'asc' });
 
-  // Auto-select first matching section if search is active
+  // Auto-select first section
   useEffect(() => {
-    if (sections.length > 0) {
-      if (searchTerm && searchTerm.trim()) {
-        const term = searchTerm.toLowerCase();
-        const firstMatch = sections.find(s => 
-          s.name.toLowerCase().includes(term) || 
-          s.description?.toLowerCase().includes(term)
-        );
-        if (firstMatch && (!selectedSection || !sections.find(s => s._id === selectedSection._id))) {
-          onSelectSection(firstMatch);
-        }
-      } else if (!selectedSection) {
-        onSelectSection(sections[0]);
-      }
+    if (sections.length > 0 && !selectedSection) {
+      onSelectSection(sections[0]);
     }
-  }, [sections, selectedSection, onSelectSection, searchTerm]);
+  }, [sections, selectedSection, onSelectSection]);
 
   // Fetch sections when document changes
   useEffect(() => {
@@ -124,18 +98,8 @@ const MainContent = ({ selectedDoc, selectedSection, onSelectSection, isEditable
   };
 
   const getSortedSections = () => {
-    let filtered = [...sections];
-    
-    // Filter by search term
-    if (searchTerm && searchTerm.trim()) {
-      const term = searchTerm.toLowerCase();
-      filtered = filtered.filter(s => 
-        s.name.toLowerCase().includes(term) || 
-        s.description?.toLowerCase().includes(term)
-      );
-    }
-
-    filtered.sort((a, b) => {
+    const sorted = [...sections];
+    sorted.sort((a, b) => {
       let valA, valB;
       if (sortConfig.key === 'order') {
         valA = a.order || sections.indexOf(a);
@@ -155,7 +119,7 @@ const MainContent = ({ selectedDoc, selectedSection, onSelectSection, isEditable
       if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
       return 0;
     });
-    return filtered;
+    return sorted;
   };
 
   const getProgressPercent = (actual, target) => {
@@ -176,7 +140,7 @@ const MainContent = ({ selectedDoc, selectedSection, onSelectSection, isEditable
     <div className="tdt-animate-in">
       {/* Document Overview */}
       <div className="tdt-doc-overview">
-        <h2 className="tdt-doc-overview-name">{highlightText(selectedDoc.name, searchTerm)}</h2>
+        <h2 className="tdt-doc-overview-name">{selectedDoc.name}</h2>
         <div className="tdt-doc-overview-meta">
           <span className="tdt-doc-overview-stat">
             📁 {selectedDoc.category}
@@ -201,7 +165,7 @@ const MainContent = ({ selectedDoc, selectedSection, onSelectSection, isEditable
           {sections.length === 0 ? (
             <div className="tdt-chart-container">
               <div className="tdt-placeholder-text" style={{ textAlign: 'center', padding: '40px' }}>
-                Chưa có mục tiêu nào trong văn kiện này
+                Chưa có mục tiêu nào trong Nội dung này
               </div>
             </div>
           ) : (
@@ -210,7 +174,7 @@ const MainContent = ({ selectedDoc, selectedSection, onSelectSection, isEditable
               <div className="tdt-chart-container">
                 <h3 className="tdt-chart-title">
                   <FaChartBar className="tdt-chart-title-icon" />
-                  {searchTerm ? `Kết quả tìm kiếm cho "${searchTerm}"` : 'Danh sách chỉ tiêu - Chọn để xem biểu đồ'}
+                  Danh sách chỉ tiêu - Chọn để xem biểu đồ
                 </h3>
                 <table className="tdt-comparison-table" style={{ width: '100%' }}>
                   <thead>
@@ -251,12 +215,7 @@ const MainContent = ({ selectedDoc, selectedSection, onSelectSection, isEditable
                             {section.order > 0 ? section.order : idx + 1}
                           </td>
                           <td style={{ fontWeight: 500, color: 'var(--tdt-red)' }}>
-                            {highlightText(section.name, searchTerm)}
-                            {section.description && searchTerm && section.description.toLowerCase().includes(searchTerm.toLowerCase()) && (
-                              <div style={{ fontSize: '0.75rem', color: '#666', fontWeight: 400, marginTop: 2 }}>
-                                {highlightText(section.description, searchTerm)}
-                              </div>
-                            )}
+                            {section.name}
                           </td>
                           <td>
                             <strong>{formatNumber(targetVal)} {section.unit}</strong>

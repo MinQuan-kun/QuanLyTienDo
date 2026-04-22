@@ -66,31 +66,16 @@ const TheodoitiendoPage = () => {
     }
   }, [activeProject]);
 
-  // Reset selected section when document changes
   useEffect(() => {
     setSelectedSection(null);
   }, [selectedDoc]);
 
   // Filter documents
   const filteredDocs = useMemo(() => {
-    if (!searchTerm.trim()) {
-      return documents.filter(doc => categoryFilter === 'All' || doc.category === categoryFilter);
-    }
-    const term = searchTerm.toLowerCase();
     return documents.filter(doc => {
-      // 1. Check document name
-      const nameMatch = doc.name.toLowerCase().includes(term);
-      
-      // 2. Check document category match (still apply category filter if needed, but usually search is global)
+      const matchSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchCat = categoryFilter === 'All' || doc.category === categoryFilter;
-
-      // 3. Check sections (detail documents)
-      const sectionMatch = doc.sections?.some(sec => 
-        (sec.name?.toLowerCase().includes(term)) || 
-        (sec.description?.toLowerCase().includes(term))
-      );
-
-      return (nameMatch || sectionMatch) && matchCat;
+      return matchSearch && matchCat;
     });
   }, [documents, searchTerm, categoryFilter]);
 
@@ -276,7 +261,6 @@ const TheodoitiendoPage = () => {
             selectedSection={selectedSection}
             onSelectSection={setSelectedSection}
             isEditable={isEditable}
-            searchTerm={searchTerm}
           />
         </main>
 

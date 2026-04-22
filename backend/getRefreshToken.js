@@ -22,7 +22,7 @@ const SCOPES = ['https://www.googleapis.com/auth/drive'];
 
 const authUrl = oauth2Client.generateAuthUrl({
   access_type: 'offline',
-  prompt: 'consent', // Cố tình yêu cầu consent để lấy được Refresh Token
+  prompt: 'consent',
   scope: SCOPES,
 });
 
@@ -36,14 +36,14 @@ const server = http.createServer(async (req, res) => {
     if (req.url.indexOf('/oauth2callback') > -1) {
       const qs = new url.URL(req.url, 'http://localhost:3000').searchParams;
       const code = qs.get('code');
-      
+
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
       res.end('<h1>Hoàn tất! Bạn có thể tắt tab này và quay lại kiểm tra Terminal ở VS Code.</h1>');
-      
+
       const { tokens } = await oauth2Client.getToken(code);
       console.log('\n✅ CẤP QUYỀN THÀNH CÔNG! Hãy dán dòng dưới đây vào file .env:\n');
       console.log(`GOOGLE_REFRESH_TOKEN="${tokens.refresh_token}"\n`);
-      
+
       process.exit(0);
     }
   } catch (e) {
@@ -54,5 +54,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(3000, () => {
-    console.log('⏳ Đang chờ bạn đăng nhập và cấp quyền...');
+  console.log('⏳ Đang chờ bạn đăng nhập và cấp quyền...');
 });

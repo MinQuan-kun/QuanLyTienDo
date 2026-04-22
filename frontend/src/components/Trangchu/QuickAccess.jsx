@@ -21,6 +21,10 @@ const QuickAccess = () => {
           </a>
         )}
 
+        <a href="/theo-doi-tien-do-trien-khai" className="quick-item doing">
+          <span>THEO DÕI TIẾN ĐỘ TRIỂN KHAI</span>
+        </a>
+
       </div>
     </div>
   );

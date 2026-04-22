@@ -1532,6 +1532,10 @@ button:disabled {
   background: #f01260; /* hồng */
 }
 
+.quick-item.doing {
+  background: #06ff55; /* hồng */
+}
+
 .quick-item.account {
   background: #6f42c1; /* tím */
 }
@@ -1837,4 +1841,4 @@ button:disabled {
 
 .mockup-list-item.active .mockup-checkbox-box {
   background: #333;
-}
+}
