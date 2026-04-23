@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { userAPI } from '../api/api';
 import AccountHeader from '../components/AccountManagement/Header';
-import Navbar from '../components/trangchu/Navbar';
+import Navbar from '../components/Trangchu/Navbar';
 import UserTable from '../components/AccountManagement/UserTable';
 import UserModal from '../components/AccountManagement/UserModal';
 import '../styles/trangchu.css';

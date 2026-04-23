@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { FaSearch, FaSortAlphaDown, FaSortAlphaUp, FaSort } from 'react-icons/fa';
 import Header from '../components/Theodoitiendotrienkhai/Header';
-import Navbar from '../components/trangchu/Navbar';
+import Navbar from '../components/Trangchu/Navbar';
 import TreeSidebar from '../components/Theodoitiendotrienkhai/TreeSidebar';
 import MainTable from '../components/Theodoitiendotrienkhai/MainTable';
 import DataModal from '../components/Theodoitiendotrienkhai/DataModal';
