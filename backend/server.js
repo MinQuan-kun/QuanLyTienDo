@@ -122,6 +122,29 @@ app.post('/api/van-ban', protect, uploadMiddleware, vanBanController.create);
 app.put('/api/van-ban/:id', protect, uploadMiddleware, vanBanController.update);
 app.delete('/api/van-ban/:id', protect, adminOnly, vanBanController.remove);
 
+// TienDoTrienKhai routes
+const tdtkController = require('./controller/tienDoTrienKhaiController');
+const { uploadMiddleware: tdtkUpload } = tdtkController;
+
+app.get('/api/tien-do-trien-khai/file/:type/:id/download', tdtkController.downloadFile);
+app.get('/api/tien-do-trien-khai/:nam', tdtkController.getAllByYear);
+
+app.post('/api/tien-do-trien-khai/trung-uong', protect, tdtkUpload, tdtkController.createTrungUong);
+app.put('/api/tien-do-trien-khai/trung-uong/:id', protect, tdtkUpload, tdtkController.updateTrungUong);
+app.delete('/api/tien-do-trien-khai/trung-uong/:id', protect, adminOnly, tdtkController.deleteTrungUong);
+
+app.post('/api/tien-do-trien-khai/thanh-uy', protect, tdtkUpload, tdtkController.createThanhUy);
+app.put('/api/tien-do-trien-khai/thanh-uy/:id', protect, tdtkUpload, tdtkController.updateThanhUy);
+app.delete('/api/tien-do-trien-khai/thanh-uy/:id', protect, adminOnly, tdtkController.deleteThanhUy);
+
+app.post('/api/tien-do-trien-khai/dang-uy', protect, tdtkUpload, tdtkController.createDangUy);
+app.put('/api/tien-do-trien-khai/dang-uy/:id', protect, tdtkUpload, tdtkController.updateDangUy);
+app.delete('/api/tien-do-trien-khai/dang-uy/:id', protect, adminOnly, tdtkController.deleteDangUy);
+
+app.post('/api/tien-do-trien-khai/ket-qua', protect, tdtkUpload, tdtkController.createKetQua);
+app.put('/api/tien-do-trien-khai/ket-qua/:id', protect, tdtkUpload, tdtkController.updateKetQua);
+app.delete('/api/tien-do-trien-khai/ket-qua/:id', protect, adminOnly, tdtkController.deleteKetQua);
+
 // User Management routes (Admin only)
 const userController = require('./controller/userController');
 app.get('/api/users', protect, adminOnly, userController.getAllUsers);

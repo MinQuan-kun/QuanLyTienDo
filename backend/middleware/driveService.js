@@ -22,15 +22,38 @@ const getAuthClient = () => {
 
 const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
 
+const getOrCreateFolder = async (drive, folderName, parentId) => {
+  const q = `name='${folderName}' and mimeType='application/vnd.google-apps.folder' and '${parentId}' in parents and trashed=false`;
+  const res = await drive.files.list({ q, fields: 'files(id, name)' });
+  if (res.data.files && res.data.files.length > 0) {
+    return res.data.files[0].id;
+  }
+  const created = await drive.files.create({
+    requestBody: {
+      name: folderName,
+      mimeType: 'application/vnd.google-apps.folder',
+      parents: [parentId],
+    },
+    fields: 'id',
+  });
+  return created.data.id;
+};
+
 /**
  * @param {Buffer} fileBuffer - nội dung file
  * @param {string} originalName - tên file gốc
  * @param {string} mimeType - MIME type
  * @returns {Promise<{fileId: string, fileName: string, webContentLink: string}>}
  */
-const uploadFileToDrive = async (fileBuffer, originalName, mimeType) => {
+const uploadFileToDrive = async (fileBuffer, originalName, mimeType, year = null, type = null) => {
   const auth = getAuthClient();
   const drive = google.drive({ version: 'v3', auth });
+
+  let parentFolderId = FOLDER_ID;
+  if (year && type) {
+    const yearFolderId = await getOrCreateFolder(drive, String(year), FOLDER_ID);
+    parentFolderId = await getOrCreateFolder(drive, type, yearFolderId);
+  }
 
   const bufferStream = new stream.PassThrough();
   bufferStream.end(fileBuffer);
@@ -38,7 +61,7 @@ const uploadFileToDrive = async (fileBuffer, originalName, mimeType) => {
   const response = await drive.files.create({
     requestBody: {
       name: originalName,
-      parents: [FOLDER_ID],
+      parents: [parentFolderId],
     },
     media: {
       mimeType,

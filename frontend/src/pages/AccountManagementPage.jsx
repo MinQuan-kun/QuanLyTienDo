@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { userAPI } from '../api/api';
 import AccountHeader from '../components/AccountManagement/Header';
-import Navbar from '../components/Trangchu/Navbar';
+import Navbar from '../components/trangchu/Navbar';
 import UserTable from '../components/AccountManagement/UserTable';
 import UserModal from '../components/AccountManagement/UserModal';
 import '../styles/trangchu.css';
@@ -21,7 +21,7 @@ const AccountManagementPage = () => {
         fetchUsers();
     }, []);
 
-    const filteredUsers = (users || []).filter(u => 
+    const filteredUsers = (users || []).filter(u =>
         (u.username?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
         (u.role?.toLowerCase() || '').includes(searchTerm.toLowerCase())
     );
@@ -70,7 +70,7 @@ const AccountManagementPage = () => {
         <>
             <AccountHeader />
             <Navbar />
-            
+
             <main className="management-container">
                 <div className="management-header">
                     <h2>QUẢN LÝ TÀI KHOẢN</h2>
@@ -99,24 +99,24 @@ const AccountManagementPage = () => {
                             </div>
                             <div className="header-actions">
                                 <div className="admin-search-box">
-                                    <input 
-                                        type="text" 
-                                        placeholder="Tìm kiếm tài khoản..." 
+                                    <input
+                                        type="text"
+                                        placeholder="Tìm kiếm tài khoản..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
                                 </div>
                             </div>
                         </div>
-                        <UserTable 
-                            users={filteredUsers} 
-                            onDelete={handleDelete} 
+                        <UserTable
+                            users={filteredUsers}
+                            onDelete={handleDelete}
                         />
                     </div>
                 )}
             </main>
 
-            <UserModal 
+            <UserModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
                 onSubmit={handleCreateUser}

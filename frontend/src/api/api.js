@@ -96,5 +96,29 @@ export const userAPI = {
   delete: (id) => api.delete(`/users/${id}`),
 };
 
+// TienDoTrienKhai APIs
+export const tienDoTrienKhaiAPI = {
+  getAllByYear: (nam) => api.get(`/tien-do-trien-khai/${nam}`),
+  
+  createTrungUong: (formData) => api.post('/tien-do-trien-khai/trung-uong', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  updateTrungUong: (id, formData) => api.put(`/tien-do-trien-khai/trung-uong/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  deleteTrungUong: (id) => api.delete(`/tien-do-trien-khai/trung-uong/${id}`),
+
+  createThanhUy: (formData) => api.post('/tien-do-trien-khai/thanh-uy', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  updateThanhUy: (id, formData) => api.put(`/tien-do-trien-khai/thanh-uy/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  deleteThanhUy: (id) => api.delete(`/tien-do-trien-khai/thanh-uy/${id}`),
+
+  createDangUy: (formData) => api.post('/tien-do-trien-khai/dang-uy', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  updateDangUy: (id, formData) => api.put(`/tien-do-trien-khai/dang-uy/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  deleteDangUy: (id) => api.delete(`/tien-do-trien-khai/dang-uy/${id}`),
+
+  createKetQua: (formData) => api.post('/tien-do-trien-khai/ket-qua', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  updateKetQua: (id, formData) => api.put(`/tien-do-trien-khai/ket-qua/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  deleteKetQua: (id) => api.delete(`/tien-do-trien-khai/ket-qua/${id}`),
+
+  downloadUrl: (type, id) => `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/tien-do-trien-khai/file/${type}/${id}/download`,
+  viewUrl: (type, id) => `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/tien-do-trien-khai/file/${type}/${id}/download?view=true`,
+};
+
 export default api;
 

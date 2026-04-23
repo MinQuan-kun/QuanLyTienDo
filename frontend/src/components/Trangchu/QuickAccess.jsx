@@ -15,15 +15,15 @@ const QuickAccess = () => {
           <span>THEO DÕI TIẾN ĐỘ</span>
         </a>
 
+        <a href="/theo-doi-tien-do-trien-khai" className="quick-item doing">
+          <span>THEO DÕI TIẾN ĐỘ TRIỂN KHAI</span>
+        </a>
+
         {user?.role === 'admin' && (
           <a href="/admin/users" className="quick-item account">
             <span>QUẢN LÝ TÀI KHOẢN</span>
           </a>
         )}
-
-        <a href="/theo-doi-tien-do-trien-khai" className="quick-item doing">
-          <span>THEO DÕI TIẾN ĐỘ TRIỂN KHAI</span>
-        </a>
 
       </div>
     </div>

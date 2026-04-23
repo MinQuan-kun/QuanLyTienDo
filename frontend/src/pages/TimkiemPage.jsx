@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { FaSearch, FaHome, FaSignOutAlt } from 'react-icons/fa';
+import { FaSearch, FaHome, FaSignOutAlt, FaSortAlphaDown, FaSortAlphaUp, FaSort } from 'react-icons/fa';
 import VanBanList from '../components/Timkiem/VanBanList';
 import VanBanTable from '../components/Timkiem/VanBanTable';
 import VanBanFormModal from '../components/Timkiem/VanBanFormModal';
@@ -14,6 +14,7 @@ const TimkiemPage = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [filterLoai, setFilterLoai] = useState('Tất cả');
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('none'); // 'none' | 'asc' | 'desc'
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,11 +52,39 @@ const TimkiemPage = () => {
     );
   }, [items, searchTerm]);
 
-  // Items for table: filtered by tab + search
+  // Natural sort helper: splits string into text/number segments for proper ordering
+  const naturalSort = (a, b) => {
+    const ax = (a.soKyHieu || '').split(/(\d+)/);
+    const bx = (b.soKyHieu || '').split(/(\d+)/);
+    for (let i = 0; i < Math.max(ax.length, bx.length); i++) {
+      const ai = ax[i] || '';
+      const bi = bx[i] || '';
+      const an = parseInt(ai, 10);
+      const bn = parseInt(bi, 10);
+      if (!isNaN(an) && !isNaN(bn)) {
+        if (an !== bn) return an - bn;
+      } else {
+        const cmp = ai.localeCompare(bi, 'vi');
+        if (cmp !== 0) return cmp;
+      }
+    }
+    return 0;
+  };
+
+  // Items for table: filtered by tab + search + sorted
   const tableItems = useMemo(() => {
-    if (filterLoai === 'Tất cả') return filteredItems;
-    return filteredItems.filter(v => v.loai === filterLoai);
-  }, [filteredItems, filterLoai]);
+    let result = filterLoai === 'Tất cả' ? filteredItems : filteredItems.filter(v => v.loai === filterLoai);
+    if (sortOrder === 'asc') {
+      result = [...result].sort(naturalSort);
+    } else if (sortOrder === 'desc') {
+      result = [...result].sort((a, b) => naturalSort(b, a));
+    }
+    return result;
+  }, [filteredItems, filterLoai, sortOrder]);
+
+  const cycleSortOrder = () => {
+    setSortOrder(prev => prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none');
+  };
 
   // Handlers
   const handleAdd = () => {
@@ -132,6 +161,24 @@ const TimkiemPage = () => {
             <button className="tk-search-clear" onClick={() => setSearchTerm('')}>✕</button>
           )}
         </div>
+
+        {/* Sort toggle */}
+        <button
+          className={`tk-sort-btn ${sortOrder !== 'none' ? 'active' : ''}`}
+          onClick={cycleSortOrder}
+          title={sortOrder === 'none' ? 'Sắp xếp theo ký hiệu' : sortOrder === 'asc' ? 'Đang sắp xếp A → Z' : 'Đang sắp xếp Z → A'}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '4px',
+            padding: '6px 12px', border: sortOrder !== 'none' ? '2px solid #c1272d' : '1px solid #ccc',
+            borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600,
+            background: sortOrder !== 'none' ? '#fff5f5' : '#fff',
+            color: sortOrder !== 'none' ? '#c1272d' : '#555',
+            transition: 'all 0.2s'
+          }}
+        >
+          {sortOrder === 'asc' ? <FaSortAlphaDown /> : sortOrder === 'desc' ? <FaSortAlphaUp /> : <FaSort />}
+          {sortOrder === 'none' ? 'Sắp xếp' : sortOrder === 'asc' ? 'A → Z' : 'Z → A'}
+        </button>
 
         {/* User info / Login */}
         {user ? (
