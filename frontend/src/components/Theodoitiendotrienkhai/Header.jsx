@@ -3,7 +3,7 @@ const Header = () => {
     <header className="tdt-header">
       <div style={{ display: 'flex', alignItems: 'center', flex: 1, gap: '16px' }}>
         <img
-          src="/img/Logo.jpg"
+          src="/img/logo1.jpg"
           alt="Logo Đảng bộ"
           className="tdt-header-logo"
         />

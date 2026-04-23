@@ -134,7 +134,7 @@ const TimkiemPage = () => {
     <div className="tk-page">
       {/* Header */}
       <header className="tk-header">
-        <img src="/img/Logo.jpg" alt="Logo Đảng bộ" className="tk-header-logo" />
+        <img src="/img/logo1.jpg" alt="Logo Đảng bộ" className="tk-header-logo" />
         <div className="tk-header-text">
           <h3 className="tk-header-subtitle">TÌM KIẾM VĂN BẢN</h3>
           <h1 className="tk-header-title">VĂN PHÒNG ĐẢNG ỦY XÃ BÀ ĐIỂM</h1>

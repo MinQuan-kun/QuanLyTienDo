@@ -52,8 +52,6 @@
   height: 56px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #fff;
-  background-color: #fff;
   flex-shrink: 0;
 }
 
@@ -322,7 +320,7 @@
 
 .tdt-panel-file-link:hover {
   background: var(--tdt-yellow);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
 
@@ -560,7 +558,7 @@
   right: -15%;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
   border-radius: 50%;
 }
 
@@ -944,7 +942,7 @@
   gap: 10px;
 }
 
-.tdt-form-row > * {
+.tdt-form-row>* {
   flex: 1;
 }
 
@@ -1123,6 +1121,7 @@
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1194,10 +1193,14 @@
     padding: 16px;
   }
 }
+
 /* --- Modal Base Styles --- */
 .tdt-modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
@@ -1215,7 +1218,7 @@
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   position: relative;
   animation: slideUp 0.3s ease-out;
   border-top: 5px solid var(--tdt-red);
@@ -1240,13 +1243,15 @@
 
 
 /* --- Form Input Fix --- */
-.tdt-form-input, .tdt-form-select {
+.tdt-form-input,
+.tdt-form-select {
   background-color: #ffffff !important;
   color: #333333 !important;
   border: 1px solid #d1d5db !important;
 }
 
-.tdt-form-input:focus, .tdt-form-select:focus {
+.tdt-form-input:focus,
+.tdt-form-select:focus {
   border-color: var(--tdt-red) !important;
   outline: none !important;
 }
@@ -1260,7 +1265,7 @@
   margin-top: 10px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .tdt-comparison-table th {
