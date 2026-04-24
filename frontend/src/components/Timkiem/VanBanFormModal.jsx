@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaUpload, FaFile, FaTimes } from 'react-icons/fa';
 
 const LOAI_OPTIONS = ['Thành ủy', 'Đảng ủy'];
-const LOAI_VAN_BAN = ['Báo cáo', 'Biên bản', 'Công văn', 'Kế hoạch', 'Nghị quyết', 'Quy định', 'Quyết định', 'Thông báo', 'Thư mời'];
+const LOAI_VAN_BAN = ['Báo cáo', 'Biên bản', 'Công văn', 'Kế hoạch', 'Nghị quyết', 'Quy định', 'Quyết định', 'Thông báo', 'Thư mời', 'Chương trình hành động', 'Kế hoạch hành động'];
 
 const defaultForm = {
   loai: 'Thành ủy',

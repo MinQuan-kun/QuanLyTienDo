@@ -12,8 +12,8 @@ const DataModal = ({ isOpen, onClose, title, onSubmit, initialData, type, parent
     donViNhanBanLuu: '',
     soLuongBan: 1,
     ghiChu: '',
-    loai: 'Đang triển khai', // only used for ketQua
-    noiDung: '', // only used for ketQua
+    loai: 'Đang triển khai',
+    noiDung: '',
   });
   const [file, setFile] = useState(null);
   const [removeFile, setRemoveFile] = useState(false);
@@ -272,17 +272,31 @@ const DataModal = ({ isOpen, onClose, title, onSubmit, initialData, type, parent
           </div>
 
           <div className="tdttk-form-group">
-            <label>Đính kèm file {type === 'trung-uong' && !initialData && <span style={{ color: 'red' }}>*</span>}</label>
+            <label>
+              Đính kèm file <span style={{ fontWeight: 'normal', fontSize: '0.8rem', color: '#64748b' }}>(Tùy chọn)</span>
+            </label>
             <input
               type="file"
-              required={type === 'trung-uong' && !initialData && !file}
               onChange={e => setFile(e.target.files[0])}
             />
+
             {initialData?.driveFileId && (
               <div style={{ marginTop: '8px', fontSize: '0.85rem', color: '#475569' }}>
-                File hiện tại: <a href={`/api/tien-do-trien-khai/file/${type}/${initialData._id}/download?view=true`} target="_blank" rel="noreferrer" style={{ color: '#3b82f6', fontWeight: 600 }}>{initialData.driveFileName}</a>
+                File hiện tại:
+                <a
+                  href={`/api/tien-do-trien-khai/file/${type}/${initialData._id}/download?view=true`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: '#3b82f6', fontWeight: 600, marginLeft: '4px' }}
+                >
+                  {initialData.driveFileName}
+                </a>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px', cursor: 'pointer', fontWeight: 'normal', color: 'red' }}>
-                  <input type="checkbox" checked={removeFile} onChange={e => setRemoveFile(e.target.checked)} />
+                  <input
+                    type="checkbox"
+                    checked={removeFile}
+                    onChange={e => setRemoveFile(e.target.checked)}
+                  />
                   Xóa file đính kèm này
                 </label>
               </div>

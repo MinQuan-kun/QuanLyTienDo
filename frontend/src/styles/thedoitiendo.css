@@ -2,7 +2,6 @@
    TRANG THEO DÕI TIẾN ĐỘ - COMPLETE STYLES
    ========================================== */
 
-/* --- CSS Variables --- */
 :root {
   --tdt-red: #c1272d;
   --tdt-red-dark: #a01f24;
@@ -1242,7 +1241,6 @@
 }
 
 
-/* --- Form Input Fix --- */
 .tdt-form-input,
 .tdt-form-select {
   background-color: #ffffff !important;
@@ -1256,7 +1254,6 @@
   outline: none !important;
 }
 
-/* --- Table Base Styles --- */
 .tdt-comparison-table {
   width: 100%;
   border-collapse: collapse;

@@ -39,7 +39,7 @@ exports.createTrungUong = async (req, res) => {
   try {
     const { nam, soKyHieu, ngayVanBan, loaiVanBan, trichYeu, nguoiKy, noiNhan, donViNhanBanLuu, soLuongBan, ghiChu } = req.body;
     if (!nam || !soKyHieu) return res.status(400).json({ message: 'Thiếu thông tin bắt buộc' });
-    if (!req.file) return res.status(400).json({ message: 'Văn bản Trung ương bắt buộc phải có file đính kèm' });
+    
 
     const fileData = await handleFileUpload(req.file, nam, 'Trung ương');
     const doc = new TDTK_TrungUong({ nam, soKyHieu, ngayVanBan, loaiVanBan, trichYeu, nguoiKy, noiNhan, donViNhanBanLuu, soLuongBan, ghiChu, ...fileData });
