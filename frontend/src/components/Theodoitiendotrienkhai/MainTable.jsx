@@ -52,7 +52,7 @@ const MainTable = ({ treeData }) => {
                                 });
                             });
                         }
-                        
+
                         tuRowSpan += thuRowSpan;
                         tuRows.push(...thuRows);
                     }
@@ -110,8 +110,11 @@ const MainTable = ({ treeData }) => {
                 {items.map((item, idx) => (
                     <div key={item._id} className="tdttk-list-item">
                         <div style={{ fontSize: '0.9rem', color: '#1e293b' }}>
-                            <span style={{ marginRight: '6px' }}>•</span>
-                            {item.noiDung}
+                            {item.soKyHieu}
+                        </div>
+                        <div style={{ fontSize: '0.85rem', color: '#475569', marginTop: '4px' }}>{item.trichYeu}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px' }}>
+                            Ngày: {new Date(item.ngayVanBan).toLocaleDateString('vi-VN')}
                         </div>
                         {item.ghiChu && <div className="tdttk-doc-note" style={{ marginLeft: '12px' }}>Ghi chú: {item.ghiChu}</div>}
                         {item.driveFileId && (
@@ -158,9 +161,9 @@ const MainTable = ({ treeData }) => {
                             <tr key={idx}>
                                 {row.tuIsFirst && <td rowSpan={row.tuRowSpan} style={{ textAlign: 'center', fontWeight: 'bold' }}>{row.stt}</td>}
                                 {row.tuIsFirst && <td rowSpan={row.tuRowSpan}>{renderCellContent(row.tu, 'trung-uong')}</td>}
-                                
+
                                 {row.thuIsFirst && <td rowSpan={row.thuRowSpan}>{renderCellContent(row.thu, 'thanh-uy')}</td>}
-                                
+
                                 <td style={{ verticalAlign: 'top' }}>{renderKetQuaList(row.du, 'Đã thực hiện')}</td>
                                 <td style={{ verticalAlign: 'top' }}>{renderKetQuaList(row.du, 'Đang triển khai')}</td>
                                 <td style={{ verticalAlign: 'top' }}>

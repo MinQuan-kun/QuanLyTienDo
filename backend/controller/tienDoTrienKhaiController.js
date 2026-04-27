@@ -38,8 +38,8 @@ const handleFileUpload = async (file, year, type) => {
 exports.createTrungUong = async (req, res) => {
   try {
     const { nam, soKyHieu, ngayVanBan, loaiVanBan, trichYeu, nguoiKy, noiNhan, donViNhanBanLuu, soLuongBan, ghiChu } = req.body;
-    if (!nam || !soKyHieu) return res.status(400).json({ message: 'Thiếu thông tin bắt buộc' });
-    
+    if (!soKyHieu) return res.status(400).json({ message: 'Thiếu thông tin bắt buộc' });
+
 
     const fileData = await handleFileUpload(req.file, nam, 'Trung ương');
     const doc = new TDTK_TrungUong({ nam, soKyHieu, ngayVanBan, loaiVanBan, trichYeu, nguoiKy, noiNhan, donViNhanBanLuu, soLuongBan, ghiChu, ...fileData });
@@ -82,7 +82,7 @@ exports.deleteTrungUong = async (req, res) => {
     const { id } = req.params;
     const doc = await TDTK_TrungUong.findByIdAndDelete(id);
     if (doc?.driveFileId) await deleteFileFromDrive(doc.driveFileId);
-    
+
     // Xóa cascade có thể làm ở DB hoặc làm frontend gọi API. Ở đây ta có thể dùng schema pre-remove, 
     // nhưng để đơn giản, ta chỉ xóa node này. Các node con mồ côi frontend có thể lọc hoặc xử lý sau.
     res.status(200).json({ message: 'Xóa thành công' });
@@ -196,11 +196,11 @@ exports.deleteDangUy = async (req, res) => {
 // === KẾT QUẢ ===
 exports.createKetQua = async (req, res) => {
   try {
-    const { dangUyId, nam, loai, noiDung, ghiChu } = req.body;
-    if (!dangUyId || !nam || !loai || !noiDung) return res.status(400).json({ message: 'Thiếu thông tin bắt buộc' });
+    const { dangUyId, nam, loai, ghiChu, soKyHieu, ngayVanBan, loaiVanBan, trichYeu, nguoiKy, noiNhan, donViNhanBanLuu, soLuongBan } = req.body;
+    if (!loai) return res.status(400).json({ message: 'Thiếu thông tin bắt buộc' });
 
     const fileData = await handleFileUpload(req.file, nam, 'Kết quả');
-    const doc = new TDTK_KetQua({ dangUyId, nam, loai, noiDung, ghiChu, ...fileData });
+    const doc = new TDTK_KetQua({ dangUyId, nam, loai, ghiChu, soKyHieu, ngayVanBan, loaiVanBan, trichYeu, nguoiKy, noiNhan, donViNhanBanLuu, soLuongBan, ...fileData });
     await doc.save();
     res.status(201).json({ message: 'Tạo thành công', data: doc });
   } catch (error) {

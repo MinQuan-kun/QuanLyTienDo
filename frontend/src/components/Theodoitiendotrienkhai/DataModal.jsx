@@ -13,7 +13,6 @@ const DataModal = ({ isOpen, onClose, title, onSubmit, initialData, type, parent
     soLuongBan: 1,
     ghiChu: '',
     loai: 'Đang triển khai',
-    noiDung: '',
   });
   const [file, setFile] = useState(null);
   const [removeFile, setRemoveFile] = useState(false);
@@ -34,7 +33,6 @@ const DataModal = ({ isOpen, onClose, title, onSubmit, initialData, type, parent
           soLuongBan: initialData.soLuongBan ?? 1,
           ghiChu: initialData.ghiChu || '',
           loai: initialData.loai || 'Đang triển khai',
-          noiDung: initialData.noiDung || '',
         });
         setFile(null);
         setRemoveFile(false);
@@ -50,7 +48,6 @@ const DataModal = ({ isOpen, onClose, title, onSubmit, initialData, type, parent
           soLuongBan: 1,
           ghiChu: '',
           loai: type === 'ket-qua' ? (initialData?.loai || 'Đang triển khai') : 'Đang triển khai',
-          noiDung: '',
         });
         setFile(null);
         setRemoveFile(false);
@@ -79,7 +76,14 @@ const DataModal = ({ isOpen, onClose, title, onSubmit, initialData, type, parent
 
     if (type === 'ket-qua') {
       data.append('loai', formData.loai);
-      data.append('noiDung', formData.noiDung);
+      data.append('soKyHieu', formData.soKyHieu);
+      data.append('ngayVanBan', formData.ngayVanBan);
+      data.append('loaiVanBan', formData.loaiVanBan);
+      data.append('trichYeu', formData.trichYeu);
+      data.append('nguoiKy', formData.nguoiKy);
+      data.append('noiNhan', formData.noiNhan);
+      data.append('donViNhanBanLuu', formData.donViNhanBanLuu);
+      data.append('soLuongBan', formData.soLuongBan);
     } else if (type === 'trung-uong' || type === 'thanh-uy') {
       data.append('soKyHieu', formData.soKyHieu);
       data.append('ngayVanBan', formData.ngayVanBan);
@@ -143,12 +147,11 @@ const DataModal = ({ isOpen, onClose, title, onSubmit, initialData, type, parent
                 </div>
                 <div style={{ flex: 1 }}>
                   <label>
-                    Ngày văn bản <span style={{ color: 'red' }}>*</span>
+                    Ngày văn bản
                   </label>
 
                   <input
                     type="date"
-                    required
                     value={formData.ngayVanBan}
                     onChange={e => setFormData({ ...formData, ngayVanBan: e.target.value })}
                     style={{
@@ -248,15 +251,98 @@ const DataModal = ({ isOpen, onClose, title, onSubmit, initialData, type, parent
                   <option value="Ghi chú">Ghi chú</option>
                 </select>
               </div>
-              <div className="tdttk-form-group">
-                <label>Nội dung <span style={{ color: 'red' }}>*</span></label>
-                <textarea
-                  required
-                  rows={4}
-                  value={formData.noiDung}
-                  onChange={e => setFormData({ ...formData, noiDung: e.target.value })}
-                  placeholder="Nhập nội dung triển khai..."
-                />
+
+              {/* Thông tin văn bản (tương tự Trung ương / Thành ủy) */}
+              <div style={{ borderTop: '1px dashed #cbd5e1', marginTop: '12px', paddingTop: '12px' }}>
+                <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600, marginBottom: '10px' }}>Thông tin văn bản</p>
+                <div className="tdttk-form-group" style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label>Số, ký hiệu</label>
+                    <input
+                      type="text"
+                      value={formData.soKyHieu}
+                      onChange={e => setFormData({ ...formData, soKyHieu: e.target.value })}
+                      placeholder="VD: 12/CV-ĐU"
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label>Ngày văn bản</label>
+                    <input
+                      type="date"
+                      value={formData.ngayVanBan}
+                      onChange={e => setFormData({ ...formData, ngayVanBan: e.target.value })}
+                      style={{
+                        color: formData.ngayVanBan ? '#334155' : '#94a3b8',
+                        border: '1px solid',
+                        borderColor: formData.ngayVanBan ? '#334155' : '#cbd5f5',
+                        padding: '6px 10px',
+                        borderRadius: '6px'
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="tdttk-form-group">
+                  <label>Loại văn bản</label>
+                  <select
+                    value={formData.loaiVanBan}
+                    onChange={e => setFormData({ ...formData, loaiVanBan: e.target.value })}
+                  >
+                    {['Báo cáo', 'Biên bản', 'Công văn', 'Kế hoạch', 'Nghị quyết', 'Quy định', 'Quyết định', 'Thông báo', 'Thư mời'].map(o => <option key={o}>{o}</option>)}
+                  </select>
+                </div>
+                <div className="tdttk-form-group">
+                  <label>Trích yếu nội dung</label>
+                  <textarea
+                    rows={3}
+                    value={formData.trichYeu}
+                    onChange={e => setFormData({ ...formData, trichYeu: e.target.value })}
+                    placeholder="Nhập trích yếu..."
+                  />
+                </div>
+                <div className="tdttk-form-group" style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label>Người ký</label>
+                    <input
+                      type="text"
+                      value={formData.nguoiKy}
+                      onChange={e => setFormData({ ...formData, nguoiKy: e.target.value })}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label>Nơi nhận</label>
+                    <input
+                      type="text"
+                      value={formData.noiNhan}
+                      onChange={e => setFormData({ ...formData, noiNhan: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div className="tdttk-form-group" style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label>Đơn vị nhận bản lưu</label>
+                    <input
+                      type="text"
+                      value={formData.donViNhanBanLuu}
+                      onChange={e => setFormData({ ...formData, donViNhanBanLuu: e.target.value })}
+                    />
+                  </div>
+                  <div style={{ flex: '0 0 100px' }}>
+                    <label>Số lượng</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={formData.soLuongBan || ''}
+                      onChange={e => setFormData({ ...formData, soLuongBan: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '6px 10px',
+                        borderRadius: '6px',
+                        border: `1px solid ${isFilled ? '#334155' : '#cbd5f5'}`,
+                        color: isFilled ? '#334155' : '#94a3b8'
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </>
           )}
